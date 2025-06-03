@@ -173,7 +173,7 @@ def register(member: MemberCreate, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_member)
 
-        send_verification_email(member.email, verification_token)
+        send_verification_email(member.membername, member.username, member.password, member.email, verification_token)
 
         return {"message": "Verification email sent. Check your inbox.", "user_id": new_member.id}
 
