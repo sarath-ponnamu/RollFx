@@ -1010,7 +1010,7 @@ async def upload_payment_proof(username: str, file: UploadFile = File(...), db: 
         with open(temp_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
-        folder_id = "1wOb2ls3vkwfggp5xpWqiz7dol5W-HBYk"  
+        folder_id = "1ClARg_8VqpC2ZI7SZo0fbs8_GJIYZBVI"  
         gdrive_link = upload_file_to_drive(temp_path, file.filename, folder_id)
 
         # Update database

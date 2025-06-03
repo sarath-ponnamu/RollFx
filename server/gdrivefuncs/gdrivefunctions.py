@@ -10,7 +10,7 @@ SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
 def get_drive_service():
     # Load service account info from environment variable
-    service_account_info = json.loads(os.environ["GOOGLE_SERVICE_ACCOUNT"])
+    service_account_info = json.loads(os.environ["ROLLFX_GOOGLE_SERVICE_ACCOUNT"])
     creds = service_account.Credentials.from_service_account_info(
         service_account_info, scopes=SCOPES
     )
