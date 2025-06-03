@@ -3,7 +3,7 @@ from sqlalchemy import or_
 import os
 from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException, Header
 from sqlalchemy.orm import Session
-from sqlalchemy import cast, String
+from sqlalchemy import cast, String, func
 from database import SessionLocal, engine
 from models import Base, Member, ProfitClub, Withdrawals
 from utils import generate_verification_token, verify_token
@@ -217,7 +217,9 @@ def get_current_user(authorization: str = Header(None)):
 
 @app.post("/login/", response_model=TokenResponse)
 def login(member: MemberLogin, db: Session = Depends(get_db)):
-    db_member = db.query(Member).filter(Member.username == member.username).first()
+    db_member = db.query(Member).filter(
+        func.lower(func.trim(Member.username)) == member.username.strip().lower()
+    ).first()
     if not db_member or not pwd_context.verify(member.password, db_member.password):
         raise HTTPException(status_code=400, detail="Invalid username or password")
     if not db_member.is_verified:
