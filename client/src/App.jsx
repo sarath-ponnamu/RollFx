@@ -15,6 +15,8 @@ import Contact from "./pages/public/contact";
 import HomeNew from "./pages/public/homenew";
 import ProfitClub from "./pages/superadmin/profitclub";
 import PayNow from "./pages/user/paynow";
+import WhatWeDo from "./pages/public/whatwedo";
+import CopyTrading from "./pages/public/copytrading";
 
 // 🔐 Private Route Component
 function PrivateRoute({ children }) {
@@ -27,7 +29,8 @@ function App() {
     <Routes>
       <Route path="/" element={<HomeNew />} />
       <Route path="/about" element={<About/>} />
-      <Route path="/services" element={<Services/>} />
+      <Route path="/whatwedo" element={<WhatWeDo/>} />
+      <Route path="/copytrading" element={<CopyTrading/>} />
       <Route path="/contact" element={<Contact/>} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup/:encodedData?" element={<SignUp />} />

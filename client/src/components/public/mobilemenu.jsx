@@ -48,21 +48,26 @@ export default function MobileMenu() {
               Home
             </NavLink>
           </li>
-          <li>
-            <NavLink to="/about" onClick={() => setMenuOpen(false)} className={linkClasses}>
-              About
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/services" onClick={() => setMenuOpen(false)} className={linkClasses}>
-              Services
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact" onClick={() => setMenuOpen(false)} className={linkClasses}>
-              Contact
-            </NavLink>
-          </li>
+      <li>
+        <NavLink to="/about" className={linkClasses}>
+          About ROLLFX
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/whatwedo" className={linkClasses}>
+          What We Do
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/copytrading" className={linkClasses}>
+          Copy Trading
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/contact" className={linkClasses}>
+          Contact
+        </NavLink>
+      </li>
           <li>
             <NavLink
               to="/login"

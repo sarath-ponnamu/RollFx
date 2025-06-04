@@ -15,12 +15,17 @@ export default function DeskTopMenu() {
       </li>
       <li>
         <NavLink to="/about" className={linkClasses}>
-          About
+          About ROLLFX
         </NavLink>
       </li>
       <li>
-        <NavLink to="/services" className={linkClasses}>
-          Services
+        <NavLink to="/whatwedo" className={linkClasses}>
+          What We Do
+        </NavLink>
+      </li>
+      <li>
+        <NavLink to="/copytrading" className={linkClasses}>
+          Copy Trading
         </NavLink>
       </li>
       <li>

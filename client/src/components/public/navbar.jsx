@@ -4,7 +4,7 @@ import SocialMediaLinks from "./socialmedialinks";
 import DeskTopMenu from "./desktopmenu";
 import LoginButton from "./loginbtton";
 import MobileMenu from "./mobilemenu";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.jpg";
 
 export default function NavBar(){
     return(
