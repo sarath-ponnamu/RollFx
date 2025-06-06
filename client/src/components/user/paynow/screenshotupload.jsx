@@ -5,6 +5,7 @@ export default function ScreenshotUpload() {
   const [fileName, setFileName] = useState("No file chosen");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  
   const currentUser = JSON.parse(localStorage.getItem("currentuser"));
 
   const handleFileSelect = (e) => {

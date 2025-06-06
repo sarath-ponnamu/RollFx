@@ -17,6 +17,7 @@ import ProfitClub from "./pages/superadmin/profitclub";
 import PayNow from "./pages/user/paynow";
 import WhatWeDo from "./pages/public/whatwedo";
 import CopyTrading from "./pages/public/copytrading";
+import EditProfile from "./pages/user/editprofile";
 
 // 🔐 Private Route Component
 function PrivateRoute({ children }) {
@@ -72,6 +73,14 @@ function App() {
         element={
           <PrivateRoute>
             <PayNow/>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/auth/editprofile"
+        element={
+          <PrivateRoute>
+            <EditProfile/>
           </PrivateRoute>
         }
       />

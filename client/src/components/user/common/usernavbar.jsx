@@ -5,6 +5,7 @@ import UserMenu from "./usermenu";
 import LogoutButton from "./logoutbtton";
 import UserMobileMenu from "./usermobilemenu";
 import logo from "../../../assets/logo.jpg";
+import UserProfileMenu from "./userprofilemenu";
 
 export default function UserNavBar(){
     return(
@@ -21,7 +22,8 @@ export default function UserNavBar(){
                   {/* </h1> */}
         <UserMenu/>
         <SocialMediaLinks/>
-        <LogoutButton/>
+        <LogoutButton/>        
+        {/* <UserProfileMenu /> */}
         <UserMobileMenu/>
       </div>
     </nav>
