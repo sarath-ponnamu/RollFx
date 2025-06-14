@@ -163,14 +163,15 @@ export default function Members() {
     const renderCards = (children, title) => (
         <div className="w-full px-2 mb-6">
             <h2 className="text-xl font-semibold mb-4 text-center">{title}</h2>
-            
-                <input
-                    type="text"
-                    value={searchText}
-                    onChange={handleSearchChange}
-                    placeholder="Search by name, username, email, phone"
-                    className="border p-2 rounded w-full"
-                />
+
+            <input
+                type="text"
+                value={searchText}
+                onChange={handleSearchChange}
+                placeholder="Search by name, username, email, phone"
+                className="border p-2 rounded w-full"
+                autoComplete="new-password"
+            />
             <div className="w-full flex flex-wrap gap-4 justify-center">
                 {children.map((c, i) => (
                     <div key={i} className="max-w-sm bg-white border border-gray-200 rounded-3xl shadow-md p-5 hover:shadow-xl transition">
