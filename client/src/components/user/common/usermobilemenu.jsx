@@ -79,14 +79,14 @@ export default function UserMobileMenu() {
               Pay Now
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <button 
                 onClick={handleLogout} 
                 className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-500"
             >
                 Logout
             </button>
-          </li>
+          </li> */}
         </ul>
       </div>
     </>

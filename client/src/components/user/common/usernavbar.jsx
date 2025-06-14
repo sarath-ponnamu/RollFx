@@ -22,8 +22,8 @@ export default function UserNavBar(){
                   {/* </h1> */}
         <UserMenu/>
         <SocialMediaLinks/>
-        <LogoutButton/>        
-        {/* <UserProfileMenu /> */}
+        {/* <LogoutButton/>         */}
+        <UserProfileMenu />
         <UserMobileMenu/>
       </div>
     </nav>

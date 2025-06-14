@@ -26,7 +26,7 @@ export default function MyWithdrawals({onTotalWithdrawalsChange}) {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-blue-200 rounded-b-3xl">
       <h2 className="text-xl font-bold mb-4">Withdrawals</h2>
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left border border-gray-300 table-fixed">

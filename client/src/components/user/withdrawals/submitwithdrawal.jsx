@@ -10,7 +10,8 @@ export default function SubmitWithdrawal() {
   const currentUser = JSON.parse(localStorage.getItem("currentuser"));
   const totalPayout = useTotalPayout();
   const { withdrawals, totalWithdrawals } = useWithdrawals(currentUser?.id);
-  const maxWithdrawal = totalPayout - totalWithdrawals;
+  const minWithdrawal = 20;
+  const availableWithdrawal = totalPayout - totalWithdrawals;
   const handleSubmit = (e) => {
     e.preventDefault();
     const numericAmount = parseFloat(amount);
@@ -20,8 +21,13 @@ export default function SubmitWithdrawal() {
       return;
     }
 
-    if (numericAmount > maxWithdrawal) {
-      setError(`Maximum withdrawal amount is $${maxWithdrawal.toFixed(3)}.`);
+    if (numericAmount > availableWithdrawal) {
+      setError(`Available withdrawal amount is $${availableWithdrawal.toFixed(3)}.`);
+      return;
+    }
+
+    if (numericAmount < minWithdrawal) {
+      setError(`Minimum Withdrawal amount is $${minWithdrawal.toFixed(3)}.`);
       return;
     }
 
@@ -65,14 +71,15 @@ export default function SubmitWithdrawal() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-yellow-100 rounded-t-3xl">
       <h2 className="text-xl font-bold mb-4">Submit a Withdrawal</h2>
       <div className="overflow-x-auto">
-        <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
-          <div>
+        <form onSubmit={handleSubmit} className="space-y-4 w-full">
+          <div className="w-full">
             <label htmlFor="amount" className="block text-sm font-medium mb-1">
-              Amount ($) Available: ${maxWithdrawal.toFixed(3)}
+              Amount ($) Available: ${availableWithdrawal.toFixed(3)}
             </label>
+            {minWithdrawal <= availableWithdrawal && 
             <input
               type="number"
               id="amount"
@@ -81,15 +88,18 @@ export default function SubmitWithdrawal() {
               step="0.001"
               placeholder="Enter amount"
               className="w-full p-2 border border-gray-300 rounded"
-            />
+            />}
+            {minWithdrawal > availableWithdrawal && 
+            <label className="text-red-500">A minimum available amount of $20.000 (twenty dollars) is required to withdraw</label>}
           </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <button
+            {minWithdrawal <= availableWithdrawal && 
+            <button
             type="submit"
             className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition"
           >
             Submit Withdrawal
-          </button>
+          </button>}
         </form>
       </div>
 
