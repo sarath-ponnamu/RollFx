@@ -77,6 +77,11 @@ class MemberResponse(BaseModel):
     paymentproof: Optional[str] = None
     phone: Optional[str] = None
 
+class MemberUpdate(BaseModel):
+    membername: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+
 class MemberLogin(BaseModel):
     username: str
     password: str
@@ -180,6 +185,31 @@ def register(member: MemberCreate, db: Session = Depends(get_db)):
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
+
+
+@app.put("/update-profile/{user_id}")
+def update_profile(user_id: int, member: MemberUpdate, db: Session = Depends(get_db)):
+    existing_member = db.query(Member).filter(Member.id == user_id).first()
+
+    if not existing_member:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    # Update only if value provided
+    if member.membername is not None:
+        existing_member.membername = member.membername
+    if member.email is not None:
+        existing_member.email = member.email
+    if member.phone is not None:
+        existing_member.phone = member.phone
+
+    try:
+        db.commit()
+        db.refresh(existing_member)
+        return {"message": "Profile updated successfully", "user_id": existing_member.id}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Update failed: {str(e)}")
+
 
 @app.get("/verify/{token}")
 def verify_email(token: str, db: Session = Depends(get_db)):
