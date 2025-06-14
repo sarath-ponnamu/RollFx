@@ -1,7 +1,7 @@
 from collections import deque
 from sqlalchemy import or_
 import os
-from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException, Header
+from fastapi import FastAPI, UploadFile, File, Form, Depends, HTTPException, Header, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import cast, String, func
 from database import SessionLocal, engine
@@ -342,6 +342,50 @@ def get_all_members(db: Session = Depends(get_db)):
         for m in members
     ]
 
+@app.get("/search-in-allmembers", response_model=List[MemberResponse])
+def get_all_members(
+    search: Optional[str] = Query(None),
+    db: Session = Depends(get_db)
+):
+    query = db.query(Member).filter(Member.role != 'superadmin')
+
+    if search:
+        search_pattern = f"%{search}%"
+        query = query.filter(
+            or_(
+                Member.membername.ilike(search_pattern),
+                Member.username.ilike(search_pattern),
+                Member.email.ilike(search_pattern),
+                Member.phone.ilike(search_pattern)
+            )
+        )
+
+    members = query.all()
+
+    return [
+        MemberResponse(
+            id=m.id,
+            name=m.membername,
+            email=m.email,
+            username=m.username,
+            parentid=m.parentid,
+            position=int(m.side),
+            is_verified=m.is_verified,
+            is_active=m.is_active,
+            createdby=m.createdby,
+            createdon=m.createdon,
+            parentname=m.parentname,
+            createdbyname=m.createdbyname,
+            role=m.role,
+            activationhistory=m.activationhistory,
+            paid=m.paid,
+            paidamount=m.paidamount,
+            paymentdate=m.paymentdate,
+            paymentproof=m.paymentproof,
+            phone=m.phone
+        )
+        for m in members
+    ]
 
 @app.get("/get-all-active-members", response_model=List[MemberResponse])
 def get_all_members(db: Session = Depends(get_db)):

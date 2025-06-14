@@ -11,7 +11,7 @@ export default function Contact() {
           Contact <span className="text-yellow-500">Us</span>
         </h1>
         <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-6">
-          Reach Out to the RollFx Team.
+          Reach Out to the ROLLFX Team.
         </h2>
         <p className="max-w-3xl mx-auto text-lg text-gray-600 leading-relaxed mb-8">
           We'd love to hear from you! For any questions, support, or business inquiries,
@@ -33,7 +33,7 @@ export default function Contact() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} RollFx. All rights reserved.
+        © {new Date().getFullYear()} ROLLFX. All rights reserved.
       </footer>
     </div>
   );

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SuperAdminNavBar from "../../components/superadmin/common/superadminnavbar";
+import { UserIcon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/solid';
+import debounce from 'lodash/debounce';
 
 export default function Members() {
     const navigate = useNavigate();
@@ -8,6 +10,7 @@ export default function Members() {
     const [user, setUser] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [modalData, setModalData] = useState(null);
+    const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -18,6 +21,16 @@ export default function Members() {
             fetchUsers(token);
         }
     }, []);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchText(value);
+        debouncedFetch(value);
+    }
+
+    const debouncedFetch = debounce((value) => {
+        fetchUsers(token, value);
+    }, 300); // 300ms debounce
 
     const formatDate = (isoDateStr) => {
         const date = new Date(isoDateStr);
@@ -48,9 +61,14 @@ export default function Members() {
         }
     }
 
-    async function fetchUsers(token) {
+    async function fetchUsers(token, searchText = "") {
         try {
-            const response = await fetch(`${import.meta.env.VITE_CRYPTO_PAYMENT_API_BASE_URL}/getallmembers`, {
+            const url = new URL(`${import.meta.env.VITE_CRYPTO_PAYMENT_API_BASE_URL}/search-in-allmembers`);
+            if (searchText) {
+                url.searchParams.append('search', searchText);
+            }
+
+            const response = await fetch(url, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -140,11 +158,55 @@ export default function Members() {
         </div>
     );
 
+
+
+    const renderCards = (children, title) => (
+        <div className="w-full px-2 mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-center">{title}</h2>
+            
+                <input
+                    type="text"
+                    value={searchText}
+                    onChange={handleSearchChange}
+                    placeholder="Search by name, username, email, phone"
+                    className="border p-2 rounded w-full"
+                />
+            <div className="w-full flex flex-wrap gap-4 justify-center">
+                {children.map((c, i) => (
+                    <div key={i} className="max-w-sm bg-white border border-gray-200 rounded-3xl shadow-md p-5 hover:shadow-xl transition">
+                        <h3 className="text-2xl font-bold text-indigo-700 mb-4">{c.name}</h3>
+
+                        <div className="space-y-3 text-sm">
+                            <div className="flex items-center text-blue-600 font-medium">
+                                <UserIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.username}</span>
+                            </div>
+
+                            <div className="flex items-center text-green-600 font-medium">
+                                <EnvelopeIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.email}</span>
+                            </div>
+
+                            <div className="flex items-center text-pink-600 font-medium">
+                                <PhoneIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.phone || "N/A"}</span>
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
+
+
     return (
         <>
             <SuperAdminNavBar />
             <div className="flex flex-col lg:flex-row lg:space-x-4 p-4">
-                {renderTable(allusers, "Members list")}
+                {/* {renderTable(allusers, "Members list")} */}
+                {renderCards([].concat(...Array(500).fill(allusers)), "Members list")}
             </div>
 
             {showModal && modalData && (

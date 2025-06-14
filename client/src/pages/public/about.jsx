@@ -8,7 +8,7 @@ export default function About() {
       {/* About Section */}
       <section className="text-center px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 mb-4">
-          About <span className="text-yellow-500">RollFx</span>
+          About <span className="text-yellow-500">ROLLFX</span>
         </h1>
         <h2 className="text-xl md:text-2xl font-semibold text-gray-700 mb-6">
           Welcome to ROLLFX – Your Trusted Partner in Forex Trading.
@@ -23,7 +23,7 @@ export default function About() {
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 py-6 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} RollFx. All rights reserved.
+        © {new Date().getFullYear()} ROLLFX. All rights reserved.
       </footer>
     </div>
   );

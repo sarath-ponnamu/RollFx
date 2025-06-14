@@ -139,7 +139,6 @@ export default function ManageMembers() {
             </div>
         </div>
     );
-
     return (
         <>
             <SuperAdminNavBar />
