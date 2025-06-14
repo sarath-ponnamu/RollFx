@@ -26,9 +26,14 @@ export default function MyWithdrawals({onTotalWithdrawalsChange}) {
   }, []);
 
   return (
-    <div className="p-4 bg-blue-200 rounded-b-3xl">
+    <div className="p-4 bg-blue-200">
       <h2 className="text-xl font-bold mb-4">Withdrawals</h2>
       <div className="overflow-x-auto">
+        {myWithdrawals.length === 0 ? (
+          <h1 className="text-red-500 flex items-center">
+          ⚠️ <span className="ml-2">No withdrawals done so far.</span>
+        </h1>
+        ):(
         <table className="w-full text-sm text-left border border-gray-300 table-fixed">
           <thead className="bg-gray-100">
             <tr>
@@ -39,14 +44,7 @@ export default function MyWithdrawals({onTotalWithdrawalsChange}) {
             </tr>
           </thead>
           <tbody>
-            {myWithdrawals.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="text-center p-4 text-gray-500">
-                  No withdrawals found.
-                </td>
-              </tr>
-            ) : (
-                myWithdrawals.map((row, index) => (
+            {myWithdrawals.map((row, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="py-2 px-1 border-b break-words">{index + 1}</td>
                   <td className="py-2 px-1 border-b break-words">{row.date}</td>
@@ -57,10 +55,10 @@ export default function MyWithdrawals({onTotalWithdrawalsChange}) {
                       <span className="text-red-500">NOT APPROVED</span>}
                   </td>
                 </tr>
-              ))
-            )}
+              ))}
           </tbody>
         </table>
+        )}
       </div>
     </div>
   );
