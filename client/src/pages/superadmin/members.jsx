@@ -28,7 +28,8 @@ export default function Members() {
         debouncedFetch(value);
     }
 
-    const debouncedFetch = debounce((value) => {
+    const debouncedFetch = debounce((value) => {        
+        const token = localStorage.getItem("access_token");
         fetchUsers(token, value);
     }, 300); // 300ms debounce
 
