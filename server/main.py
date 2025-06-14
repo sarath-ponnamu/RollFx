@@ -82,6 +82,12 @@ class MemberUpdate(BaseModel):
     email: Optional[str] = None
     phone: Optional[str] = None
 
+class ChangePasswordRequest(BaseModel):
+    user_id: int
+    current_password: str
+    new_password: str
+
+
 class MemberLogin(BaseModel):
     username: str
     password: str
@@ -209,6 +215,30 @@ def update_profile(user_id: int, member: MemberUpdate, db: Session = Depends(get
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"Update failed: {str(e)}")
+
+
+@app.put("/change-password/{user_id}")
+def change_password(user_id: int, request: ChangePasswordRequest, db: Session = Depends(get_db)):
+    member = db.query(Member).filter(Member.id == user_id).first()
+
+    if not member:
+        raise HTTPException(status_code=404, detail="User not found.")
+
+    # Verify current password
+    if not pwd_context.verify(request.current_password, member.password):
+        raise HTTPException(status_code=400, detail="Current password is incorrect.")
+
+    # Hash new password
+    hashed_new_password = pwd_context.hash(request.new_password)
+
+    try:
+        member.password = hashed_new_password
+        db.commit()
+        return {"message": "Password updated successfully."}
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Password update failed: {str(e)}")
+    
 
 
 @app.get("/verify/{token}")
