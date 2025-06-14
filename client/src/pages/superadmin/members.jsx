@@ -206,7 +206,7 @@ export default function Members() {
             <SuperAdminNavBar />
             <div className="flex flex-col lg:flex-row lg:space-x-4 p-4">
                 {/* {renderTable(allusers, "Members list")} */}
-                {renderCards([].concat(...Array(500).fill(allusers)), "Members list")}
+                {renderCards([].concat(...Array(1).fill(allusers)), "Members list")}
             </div>
 
             {showModal && modalData && (
