@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SuperAdminNavBar from "../../components/superadmin/common/superadminnavbar";
-import { UserIcon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/solid';
+import { UserIcon, EnvelopeIcon, PhoneIcon, CalendarIcon, ChevronDoubleUpIcon, UserGroupIcon } from '@heroicons/react/24/solid';
 import debounce from 'lodash/debounce';
 
 export default function Members() {
@@ -28,7 +28,7 @@ export default function Members() {
         debouncedFetch(value);
     }
 
-    const debouncedFetch = debounce((value) => {        
+    const debouncedFetch = debounce((value) => {
         const token = localStorage.getItem("access_token");
         fetchUsers(token, value);
     }, 300); // 300ms debounce
@@ -175,9 +175,8 @@ export default function Members() {
             />
             <div className="w-full flex flex-wrap gap-4 justify-center">
                 {children.map((c, i) => (
-                    <div key={i} className="max-w-sm bg-white border border-gray-200 rounded-3xl shadow-md p-5 hover:shadow-xl transition">
+                    <div key={i} className="w-100 max-w-sm bg-white border border-gray-200 rounded-3xl shadow-md p-5 hover:shadow-xl transition">
                         <h3 className="text-2xl font-bold text-indigo-700 mb-4">{c.name}</h3>
-
                         <div className="space-y-3 text-sm">
                             <div className="flex items-center text-blue-600 font-medium">
                                 <UserIcon className="w-5 h-5 mr-2" />
@@ -192,6 +191,21 @@ export default function Members() {
                             <div className="flex items-center text-pink-600 font-medium">
                                 <PhoneIcon className="w-5 h-5 mr-2" />
                                 <span className="font-semibold">{c.phone || "N/A"}</span>
+                            </div>
+
+                            <div className="flex items-center text-orange-600 font-medium">
+                                <CalendarIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.createdon || "N/A"}</span>
+                            </div>
+
+                            <div className="flex items-center text-yellow-600 font-medium">
+                                <ChevronDoubleUpIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.parentname || "N/A"}</span>
+                            </div>
+
+                            <div className="flex items-center text-violet-600 font-medium">
+                                <UserGroupIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.createdbyname || "N/A"}</span>
                             </div>
                         </div>
 
@@ -208,10 +222,10 @@ export default function Members() {
             <SuperAdminNavBar />
             <div className="flex flex-col lg:flex-row lg:space-x-4 p-4">
                 {/* {renderTable(allusers, "Members list")} */}
-                {renderCards([].concat(...Array(1).fill(allusers)), "Members list")}
+                {renderCards([].concat(...Array(1).fill(allusers.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())))), "Members list")}
             </div>
 
-            {showModal && modalData && (
+            {/* {showModal && modalData && (
                 <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                         <h3 className="text-lg font-semibold mb-4 text-center">
@@ -233,7 +247,7 @@ export default function Members() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </>
     );
 }
