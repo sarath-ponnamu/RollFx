@@ -47,8 +47,9 @@ export default function ChangePassword() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            currentPassword: formData.currentPassword,
-            newPassword: formData.newPassword,
+            "user_id": currentUser.id,
+            "current_password": formData.currentPassword,
+            "new_password": formData.newPassword
           }),
         }
       );
