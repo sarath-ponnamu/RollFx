@@ -387,7 +387,7 @@ def get_all_members(
                 Member.username.ilike(search_pattern),
                 Member.email.ilike(search_pattern),
                 Member.phone.ilike(search_pattern),
-                Member.createdon.ilike(search_pattern),
+                cast(Member.createdon, String).ilike(search_pattern),
                 Member.parentname.ilike(search_pattern),
                 Member.createdbyname.ilike(search_pattern)
             )
