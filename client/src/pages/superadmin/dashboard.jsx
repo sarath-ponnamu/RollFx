@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SuperAdminNavBar from "../../components/superadmin/common/superadminnavbar";
-import { EyeIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, UserIcon, CalendarIcon, CurrencyDollarIcon } from '@heroicons/react/24/solid';
+import debounce from 'lodash/debounce';
 
 export default function DashBoard(){
 
@@ -12,6 +13,7 @@ export default function DashBoard(){
     const [modalData, setModalData] = useState(null);
     const [selectedUser, setSelectedUser] = useState(null);
     const [paymentProofImgId, setPaymentProofImgId] = useState(null);
+    const [searchText, setSearchText] = useState("");
 
     useEffect(() => {
         const token = localStorage.getItem("access_token");
@@ -22,6 +24,18 @@ export default function DashBoard(){
             fetchUsers(token);
         }
     }, []);
+    
+        const handleSearchChange = (e) => {
+            const value = e.target.value;
+            setSearchText(value);
+            debouncedFetch(value);
+        }
+    
+        const debouncedFetch = debounce((value) => {
+            const token = localStorage.getItem("access_token");
+            fetchUsers(token, value);
+        }, 300); // 300ms debounce
+    
 
     const formatDate = (isoDateStr) => {
         const date = new Date(isoDateStr);
@@ -52,9 +66,14 @@ export default function DashBoard(){
         }
     }
 
-    async function fetchUsers(token) {
+    async function fetchUsers(token, searchText = "") {
         try {
-            const response = await fetch(`${import.meta.env.VITE_CRYPTO_PAYMENT_API_BASE_URL}/getallmembers`, {
+            const url = new URL(`${import.meta.env.VITE_CRYPTO_PAYMENT_API_BASE_URL}/search-in-allmembers`);
+            if (searchText) {
+                url.searchParams.append('search', searchText);
+            }
+
+            const response = await fetch(url, {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -70,6 +89,7 @@ export default function DashBoard(){
             console.error("Error fetching users:", error);
         }
     }
+
 
     const renderTable = (children, title) => (
         <div className="w-full px-2 mb-6">
@@ -111,6 +131,68 @@ export default function DashBoard(){
         </div>
     );
 
+    
+
+
+
+    const renderCards = (children, title) => (
+        <div className="w-full px-2 mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-center">{title}</h2>
+
+            <input
+                type="text"
+                value={searchText}
+                onChange={handleSearchChange}
+                placeholder="Search by name, username, email, phone"
+                className="border p-2 rounded w-full"
+                autoComplete="new-password"
+            />
+            <div className="w-full flex flex-wrap gap-4 justify-center">
+                {children.map((c, i) => (
+                    <div key={i} className="w-100 max-w-sm bg-white border border-gray-200 rounded-3xl shadow-md p-5 hover:shadow-xl transition">
+                        <h3 className="text-2xl font-bold text-indigo-700 mb-4">{c.name}</h3>
+                        <div className="space-y-3 text-sm">
+                            <div className="flex items-center text-blue-600 font-medium">
+                                <UserIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.username}</span>
+                            </div>
+
+                            <div className="flex items-center text-green-600 font-medium">
+                                <CurrencyDollarIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.paidamount.toFixed(3)}</span>
+                            </div>
+
+                            <div className="flex items-center text-pink-600 font-medium">
+                                <CalendarIcon className="w-5 h-5 mr-2" />
+                                <span className="font-semibold">{c.paymentdate || "N/A"}</span>
+                            </div>
+
+                            <div className="flex items-center text-violet-600 font-medium">
+                                {/* <UserGroupIcon className="w-5 h-5 mr-2" /> */}
+                                {/* <span className="font-semibold border rounded-lg p-2 hover:bg-blue-100"> */}
+                                    <button 
+                                    className="flex items-center text-blue-600 hover:underline cursor-pointer
+                                    font-semibold border rounded-lg p-2 hover:bg-blue-100"
+                                    onClick={() => {
+                                    setSelectedUser(c);
+                                    handleShowScreenshot();
+                                    }}                                   
+                                    >
+                                        <EyeIcon className="w-5 h-5 mr-2" /> View ScreenShot
+                                    </button> 
+                                    {/* </span> */}
+                            </div>
+                        </div>
+
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+
+
+
+
   const handleShowScreenshot = () => {
     setShowModal(true);
   };
@@ -123,7 +205,8 @@ export default function DashBoard(){
         <>
             <SuperAdminNavBar />
             <div className="flex flex-col lg:flex-row lg:space-x-4 p-4">
-                {renderTable(allusers.filter(u => u.paid), "Payment details")}
+                {/* {renderTable(allusers.filter(u => u.paid), "Payment details")} */}
+                {renderCards(allusers.filter(u => u.paid), "Payment details")}
             </div>
 
             {showModal && (
